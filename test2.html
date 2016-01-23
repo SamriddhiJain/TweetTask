@@ -1,0 +1,63 @@
+<html>
+<head>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+    <form id="form" name="form">
+    <div>
+      <label>Text :</label>
+      <input id="text" type="text">
+      <button id="myBtn">Submit</button>
+    </div>
+    </form>
+    <h1>NEWS</h1>
+    <p id="newsDemo"></p>
+    <script>
+
+         document.getElementById("myBtn").addEventListener("click", function(event){
+            event.preventDefault();
+            var val = document.getElementById("text").value;
+            //alert(val);
+            var string="val="+val;
+            $.ajax({
+              type: "POST",
+              url: "gnews.php?",
+              dataType: 'text',
+              data: string,
+              //timeout: 10000,
+              success: function(data) {
+                //alert(data);
+                var result=JSON.parse(data);
+
+                if(result['responseStatus'] == 200){
+                  var news=result['responseData']['results'];
+
+                  var val="";
+                  
+                  for (var i in news){
+                    val += "<p>"
+                    val += news[i].titleNoFormatting;
+                    val += "<br>"
+                    val += news[i].publishedDate;
+                    val += news[i].publisher;
+                    val += "<br> <a href="
+                    val += news[i].unescapedUrl;
+                    val += ">Link for news </a>"
+                    val += "</p>"
+                  }
+                  document.getElementById("newsDemo").innerHTML=val;
+                }else{
+                  alert("Error in the news extraction");
+                }
+                //alert("Done");
+              },
+              error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }});
+        });
+
+     </script>
+    
+</body>
+</html>

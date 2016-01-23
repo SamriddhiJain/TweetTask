@@ -1,0 +1,35 @@
+<html>
+<head>
+    
+    <script type="text/javascript" src="./alchemyapi.js"></script>
+</head>
+<body>
+    <input type="button" id="buttonid" value="click">
+    <script>
+
+         document.getElementById("buttonid").addEventListener("click", function(){
+            var text="Find US citizens and other countries";
+            alert(text);
+            
+            //var AlchemyAPI = require('./alchemyapi');
+            var alchemyapi = new AlchemyAPI();
+            var val=""; 
+            //alert("eveef");
+            function entities() {
+                alert("eeewf");
+                alchemyapi.entities('text', text, null, function(response) {
+                  var ent=response['entities'];
+                  for (var i in ent) {
+                    val += ent[i].text;
+                  }
+              });  
+            }
+            entities();
+            alert(val);
+        });
+
+
+     </script>
+    
+</body>
+</html>
