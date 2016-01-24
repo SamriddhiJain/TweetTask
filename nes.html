@@ -8,8 +8,13 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <style>
+
+    html, body, .container-fluid, .row {
+        height: 100%;
+    }
+
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 550px}
+    .row.content {height: 2500px}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -41,6 +46,7 @@
         <li><a href="#">News</a></li>
         <li><a href="#">Tweets</a></li>
         <li><a href="#">Analytics</a></li>
+        <li><a href="#">News Display</a></li>
       </ul>
     </div>
   </div>
@@ -55,6 +61,7 @@
         <li><a data-toggle="pill" href="#section2">News</a></li>
         <li><a data-toggle="pill" href="#section3">Tweets</a></li>
         <li><a data-toggle="pill" href="#section4">Analytics</a></li>
+        <li><a data-toggle="pill" href="#section5">News Display</a></li>
       </ul><br>
     </div>
     <br>
@@ -65,8 +72,9 @@
           <div class="well">
             <label>Text :</label>
             <input id="text" type="text">
-            <button id="myBtn">Submit</button>
-
+            <button id="myBtn" type="button" class="btn btn-info">
+              <span class="glyphicon glyphicon-search"></span> Search
+            </button>
 
             <script>
 
@@ -93,17 +101,24 @@
                           var news=result['responseData']['results'];
                          
                           for (var i in news){
-                            value += '<div class="col-sm-9"> <div class="well">'
+                            value += '<div class="col-sm-9"> <div class="well">';
                             value += news[i].titleNoFormatting;
                             value += "<br>"
                             value += news[i].publishedDate;
                             value += news[i].publisher;
-                            value += "<br> <a href="
+                            value += "<br> <a href=view.php?url="
                             value += news[i].unescapedUrl;
-                            value += ">Link for news </a>"
-                            value += '</div></div>'
+                            value += ">Link for news </a>";
+                            /*value += '<button id="Btn" type="button" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>';
+                            value += '<script>document.getElementById("Btn").addEventListener("click", function(event){event.preventDefault();$("#news").load(';
+                            value += news[i].unescapedUrl;
+                            value += ");)};&lt;/script&gt;"*/
+                            value += "</div></div>";
                           }
                           document.getElementById("newsDemo").innerHTML=value;
+
+                          $('.nav-pills a:[href="#section2"]').tab('show');
+
                         }else{
                           alert("Error in the news extraction");
                         }
@@ -163,6 +178,9 @@
       <div id="section4" class="tab-pane fade">
         <h3>Analysis and Graphs</h3>
         <p id="grphs"></p>
+      </div>
+      <div id="section5" class="tab-pane fade">
+        <div id="news"></div>
       </div>
     </div>
     
