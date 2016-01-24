@@ -1,5 +1,6 @@
 <?php
 	$string= $_POST['val'];
+	//$string= "Rohit Vemula";
 	require_once("twitteroauth-master/twitteroauth/twitteroauth.php");
 	/** Set access tokens here - see: https://dev.twitter.com/apps/ **/
 	
@@ -11,11 +12,11 @@
 
 	function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oauth_token_secret) {
 	  $connection = new TwitterOAuth($cons_key, $cons_secret, $oauth_token, $oauth_token_secret);
-	  $connection->setProxy([
-	    'CURLOPT_PROXY' => '127.0.0.0',
+	  /*$connection->setProxy([
+	    'CURLOPT_PROXY' => '10.8.0.1',
 	    'CURLOPT_PROXYUSERPWD' => '',
 	    'CURLOPT_PROXYPORT' => 8080,
-	]);
+	]);*/
 	  return $connection;
 	}
 
@@ -26,13 +27,9 @@
 	//echo $json;
 	//var_dump($tweets->search_metadata);
 	$json=$tweets->statuses;	
-	echo $json;
-	if($json==""){
-		echo "gvkhvk";
-	}else{
-		echo $json;
-	}
-/*
+	
+	echo json_encode($json);
+/*json
 	foreach ($json as $var){
 		$o_user=$var->user;
 		$r_user = (isset($var->retweeted_status) ? $var->retweeted_status : false);

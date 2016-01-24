@@ -1,10 +1,11 @@
 <?php
 	$string= $_POST['val'];
+	$start= $_POST['start'];
 	$cnt=0;
 
 	for($i=0;$i<7;$i+=8){
 
-		$url = "https://ajax.googleapis.com/ajax/services/search/news?v=1.0&q=".urlencode($string)."&rsz=large&start=".$i;
+		$url = "https://ajax.googleapis.com/ajax/services/search/news?v=1.0&q=".urlencode($string)."&rsz=large&start=".$start;
 
 		// sendRequest
 		// note how referer is set manually

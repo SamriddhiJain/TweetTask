@@ -1,7 +1,13 @@
 <html>
 <head>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+     <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
     <form id="form" name="form">
@@ -13,48 +19,82 @@
     </form>
     <h1>NEWS</h1>
     <p id="newsDemo"></p>
+    <h1>Tweets</h1>
+    <p id="TweetDemo"></p>
     <script>
 
          document.getElementById("myBtn").addEventListener("click", function(event){
             event.preventDefault();
             var val = document.getElementById("text").value;
             //alert(val);
-            var string="val="+val;
-            $.ajax({
-              type: "POST",
-              url: "gnews.php?",
-              dataType: 'text',
-              data: string,
-              //timeout: 10000,
-              success: function(data) {
-                //alert(data);
-                var result=JSON.parse(data);
+            var value="";
+            var Tvalue="";
 
-                if(result['responseStatus'] == 200){
-                  var news=result['responseData']['results'];
+            for(var i=0;i<16;i+=8){
+              $.ajax({
+                type: "POST",
+                url: "gnews.php?",
+                dataType: 'text',
+                data: "val="+val+"&start="+i,
+                //timeout: 10000,
+                success: function(data) {
+                  //alert(data);
+                  var result=JSON.parse(data);
 
-                  var val="";
-                  
-                  for (var i in news){
-                    val += "<p>"
-                    val += news[i].titleNoFormatting;
-                    val += "<br>"
-                    val += news[i].publishedDate;
-                    val += news[i].publisher;
-                    val += "<br> <a href="
-                    val += news[i].unescapedUrl;
-                    val += ">Link for news </a>"
-                    val += "</p>"
+                  if(result['responseStatus'] == 200){
+                    var news=result['responseData']['results'];
+                   
+                    for (var i in news){
+                      value += "<p>"
+                      value += news[i].titleNoFormatting;
+                      value += "<br>"
+                      value += news[i].publishedDate;
+                      value += news[i].publisher;
+                      value += "<br> <a href="
+                      value += news[i].unescapedUrl;
+                      value += ">Link for news </a>"
+                      value += "</p>"
+                    }
+                    document.getElementById("newsDemo").innerHTML=value;
+                  }else{
+                    alert("Error in the news extraction");
                   }
-                  document.getElementById("newsDemo").innerHTML=val;
-                }else{
-                  alert("Error in the news extraction");
+                  //alert("Done");
+                },
+                error: function(xhr){
+                  alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                }});
+
+              //request for tweets
+              $.ajax({
+                type: "POST",
+                url: "ret_net.php?",
+                dataType: 'text',
+                data: "val="+val,
+                //timeout: 10000,
+                success: function(data) {
+                  var result=JSON.parse(data);
+                  var user;
+
+                  for (var i in result){
+                    user=result[i].user;
+                    Tvalue += "<p>"
+                    Tvalue += user.name;
+                    Tvalue += "<br>"
+                    Tvalue += result[i].created_at;
+                    Tvalue += user.time_zone;
+                    Tvalue += "<br>"
+                    Tvalue += result[i].text;
+                    Tvalue += "</p>"
+                  }
+                  document.getElementById("TweetDemo").innerHTML=Tvalue;
+                  //alert("Done");
+                },
+                error: function(xhr){
+                  alert("An error occured: " + xhr.status + " " + xhr.statusText);
                 }
-                //alert("Done");
-              },
-              error: function(xhr){
-                alert("An error occured: " + xhr.status + " " + xhr.statusText);
-            }});
+              });
+            }
         });
 
      </script>
