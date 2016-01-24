@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>News Integrator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 550px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+        
+    /* On small screens, set height to 'auto' for the grid */
+    @media screen and (max-width: 767px) {
+      .row.content {height: auto;} 
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse visible-xs">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">###</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Query</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Tweets</a></li>
+        <li><a href="#">Analytics</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav hidden-xs">
+      <h2 id="query"></h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a data-toggle="pill" href="#section1">Query</a></li>
+        <li><a data-toggle="pill" href="#section2">News</a></li>
+        <li><a data-toggle="pill" href="#section3">Tweets</a></li>
+        <li><a data-toggle="pill" href="#section4">Analytics</a></li>
+      </ul><br>
+    </div>
+    <br>
+
+    <div class="tab-content">
+      <div id="section1" class="tab-pane fade in active">
+        <div class="col-sm-9">
+          <div class="well">
+            <label>Text :</label>
+            <input id="text" type="text">
+            <button id="myBtn">Submit</button>
+
+
+            <script>
+
+               document.getElementById("myBtn").addEventListener("click", function(event){
+                  event.preventDefault();
+                  var val = document.getElementById("text").value;
+                  document.getElementById("query").innerHTML=val;
+                  //alert(val);
+                  var value="";
+                  var Tvalue="";
+
+                  for(var i=0;i<16;i+=8){
+                    $.ajax({
+                      type: "POST",
+                      url: "gnews.php?",
+                      dataType: 'text',
+                      data: "val="+val+"&start="+i,
+                      //timeout: 10000,
+                      success: function(data) {
+                        //alert(data);
+                        var result=JSON.parse(data);
+
+                        if(result['responseStatus'] == 200){
+                          var news=result['responseData']['results'];
+                         
+                          for (var i in news){
+                            value += '<div class="col-sm-9"> <div class="well">'
+                            value += news[i].titleNoFormatting;
+                            value += "<br>"
+                            value += news[i].publishedDate;
+                            value += news[i].publisher;
+                            value += "<br> <a href="
+                            value += news[i].unescapedUrl;
+                            value += ">Link for news </a>"
+                            value += '</div></div>'
+                          }
+                          document.getElementById("newsDemo").innerHTML=value;
+                        }else{
+                          alert("Error in the news extraction");
+                        }
+                        //alert("Done");
+                      },
+                      error: function(xhr){
+                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                      }});
+
+                    //request for tweets
+                    $.ajax({
+                      type: "POST",
+                      url: "ret_net.php?",
+                      dataType: 'text',
+                      data: "val="+val,
+                      //timeout: 10000,
+                      success: function(data) {
+                        var result=JSON.parse(data);
+                        var user;
+
+                        for (var i in result){
+                          user=result[i].user;
+                          Tvalue += '<div class="col-sm-9"> <div class="well">'
+                          Tvalue += user.name;
+                          Tvalue += "<br>"
+                          Tvalue += result[i].created_at;
+                          Tvalue += user.time_zone;
+                          Tvalue += "<br>"
+                          Tvalue += result[i].text;
+                          Tvalue += '</div></div>'
+                        }
+                        document.getElementById("TweetDemo").innerHTML=Tvalue;
+                        //alert("Done");
+                      },
+                      error: function(xhr){
+                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                      }
+                    });
+                  }
+              });
+
+           </script>
+
+
+
+          </div>
+        </div>
+      </div>
+      <div id="section2" class="tab-pane fade">
+        <h3>News</h3>
+        <p id="newsDemo"></p>
+      </div>
+      <div id="section3" class="tab-pane fade">
+        <h3>Tweets</h3>
+        <p id="TweetDemo"></p>
+      </div>
+      <div id="section4" class="tab-pane fade">
+        <h3>Analysis and Graphs</h3>
+        <p id="grphs"></p>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+</body>
+</html>
