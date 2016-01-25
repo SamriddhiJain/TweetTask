@@ -29,24 +29,78 @@
   </style>
 </head>
 <body>
-    	<div class="container">
-			<div class="jumbotron">
-			    <?php
-					$string= $_GET['url'];
-					echo '<iframe src='.$string.' width="1000" height="1500"/>';
-				?>
-			</div>    
-		</div>
-        
-        <div class="col-sm-4">
-          <div class="well">
-            <label>Text :</label>
-            <input id="text" type="text">
-            <button id="myBtn" type="button" class="btn btn-info">
-              <span class="glyphicon glyphicon-search"></span> Search
-            </button>
-        </div>
-        </div>
+    
+	    <div class="row">
+	        <div class="col-sm-4">
+		        <div class="well">
+		        	<input id="text" type="text">
+		        	<p>Select text and click on the button to get the related tweets</p>
+		            <button id="myBtn" type="button" class="btn btn-info">
+			            <span class="glyphicon glyphicon-search"></span> Search
+			        </button>
+
+			        <script>
+			        	function getIframeSelectionText(iframe) {
+							  var win = iframe.contentWindow;
+							  var doc = win.document;
+
+							  if (win.getSelection) {
+							    return win.getSelection().toString();
+							  } else if (doc.selection && doc.selection.createRange) {
+							    return doc.selection.createRange().text;
+							  }
+						}
+
+			        	document.getElementById("myBtn").addEventListener("click", function(event){
+                  			event.preventDefault();
+				        	var text=document.getElementById('text').value;
+				        	//document.getElementById("news-Display").innerHTML=text;
+				        	var Tvalue="";
+				        	$.ajax({
+		                      type: "POST",
+		                      url: "ret_net.php?",
+		                      dataType: 'text',
+		                      data: "val="+text,
+		                      //timeout: 10000,
+		                      success: function(data) {
+		                        var result=JSON.parse(data);
+		                        var user;
+
+		                        for (var i in result){
+		                          user=result[i].user;
+		                          Tvalue += '<div class="well">'
+		                          Tvalue += user.name;
+		                          Tvalue += "<br>"
+		                          Tvalue += result[i].created_at;
+		                          Tvalue += user.time_zone;
+		                          Tvalue += "<br>"
+		                          Tvalue += result[i].text;
+		                          Tvalue += '</div>'
+		                        }
+		                        document.getElementById("news-Display").innerHTML=Tvalue;
+		                        //alert("Done");
+		                      },
+		                      error: function(xhr){
+		                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
+		                      }
+		                    });
+				        });
+			        </script>
+		        </div>
+
+		        <p id="news-Display"></p>
+	        </div>
+	        <div class="col-sm-8">
+		        <div class="well">
+		           <?php
+						$string= $_GET['url'];
+						echo '<iframe id="news" src='.$string.' width="800" height="1500"/>';
+					?>
+		        </div>
+	        </div>
+	    </div>
+    
+
    
 </body>
 </html>
