@@ -158,12 +158,44 @@
                       }
                     });
                   }
+
+                //graphs  
+                /*document.getElementById("news-time").innerHTML='<script type="text/javascript" src="//www.google.com/trends/embed.js?hl=en-US&q='+encodeURI(val)+'&date=now+7-d&geo=IN&tz=Etc/GMT-5:30&content=1&cid=TIMESERIES_GRAPH_0&export=5&w=500&h=330">&lt;/script&gt;';*/
+
               });
 
            </script>
 
 
 
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="well">
+            <p id="hotTrends">
+              <script type="text/javascript">
+                  var trends="";
+                  $.ajax({
+                      type: "POST",
+                      url: "pg.php?",
+                      dataType: 'text',
+                      success: function(data) { 
+                        var result=JSON.parse(data);
+                        alert(result); 
+                        for (var i in result){
+                          if(result[i]!="Hot Trends"){
+                            trends+=result[i]
+                            trends+='<br>'
+                          }
+                        }
+                        document.getElementById("hotTrends").innerHTML=trends;
+                      },
+                      error: function(xhr){
+                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                      }
+                    });
+              </script>
+            </p>
           </div>
         </div>
       </div>
@@ -177,7 +209,24 @@
       </div>
       <div id="section4" class="tab-pane fade">
         <h3>Analysis and Graphs</h3>
-        <p id="grphs"></p>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="well">
+                <p id="news-time"></p>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="well">
+                <p id="news-region"></p>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="well">
+                <p id="news-region2"></p>
+              </div>
+            </div>
+        </div>
+        
       </div>
       <div id="section5" class="tab-pane fade">
         <div id="news"></div>
