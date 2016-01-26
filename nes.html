@@ -108,6 +108,7 @@
                             value += news[i].publisher;
                             value += "<br> <a href=view.php?url="
                             value += news[i].unescapedUrl;
+                            value += "&val="+val;
                             value += ">Link for news </a>";
                             /*value += '<button id="Btn" type="button" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>';
                             value += '<script>document.getElementById("Btn").addEventListener("click", function(event){event.preventDefault();$("#news").load(';
@@ -181,7 +182,7 @@
                       dataType: 'text',
                       success: function(data) { 
                         var result=JSON.parse(data);
-                        alert(result); 
+                        //alert(result); 
                         for (var i in result){
                           if(result[i]!="Hot Trends"){
                             trends+=result[i]
