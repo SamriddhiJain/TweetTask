@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://platform.twitter.com/widgets.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <style>
@@ -16,7 +17,9 @@
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 2500px}
 
-    
+    #search{
+    	background-color: #34465d;
+    }
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -32,13 +35,15 @@
 </head>
 <body>
     
-        <div id="search" class="col-sm-12">
-	        <div class="well">
-	        	<input id="text" type="text">
-	        	<p>Select text and click on the button to get the related tweets</p>
-	            <button id="myBtn" type="button" class="btn btn-info">
-		            <span class="glyphicon glyphicon-search"></span> Search
-		        </button>
+        <div class="col-sm-12">
+	        <div id="search" class="well">
+	        	<span>
+		        	<input id="text" type="text">
+		        	<h3 style="color:white">Copy paste the text and click on the button to get the related tweets</h3>
+		            <button id="myBtn" type="button" class="btn btn-info">
+			            <span class="glyphicon glyphicon-search"></span> Search
+			        </button>
+		        </span>
 
 		        <script>
 		        	function getIframeSelectionText(iframe) {
@@ -65,10 +70,12 @@
 	                        data: "val="+text,
 	                        success: function(data) {
 	                        	//alert(data);
+	                        	var str ='<div class="well">Detected Entities: '+data+'</div>';
+	                        	document.getElementById("entities").innerHTML=str;
 	                      	    req=data;
 
-	                      	    var query="<?php echo $_GET['val'] ?>"+req;
-
+	                      	    var query="<?php echo $_GET['val'] ?>";
+	                      	  
 								//get tweets
 					        	var Tvalue="";
 					        	$.ajax({
@@ -78,23 +85,16 @@
 			                      data: "val="+ query,
 			                      //timeout: 10000,
 			                      success: function(data) {
+			                        //alert(data);
 			                        var result=JSON.parse(data);
-			                        var user;
 
 			                        for (var i in result){
-			                          user=result[i].user;
 			                          Tvalue += '<div class="well">'
-			                          Tvalue += user.name;
-			                          Tvalue += "<br>"
-			                          Tvalue += result[i].created_at;
-			                          Tvalue += user.time_zone;
-			                          Tvalue += "<br>"
-			                          Tvalue += result[i].text;
+			                          Tvalue += result[i];
 			                          Tvalue += '</div>'
 			                        }
-			                        alert(Tvalue);
 			                        document.getElementById("news-Display").innerHTML=Tvalue;
-			                        //alert("Done");
+			                        twttr.widgets.load();
 			                      },
 			                      error: function(xhr){
 			                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -110,19 +110,25 @@
 			        });
 		        </script>
 	        </div>
+        </div>
 
-	        <div class="col-sm-12">
-	        	<p id="news-Display"></p>
-	        </div>
-        </div>
         <div class="col-sm-12">
-	        <div class="well">
-	           <?php
-					$string= $_GET['url'];
-					echo '<iframe id="news" src='.$string.' width="800" height="1500" />';
-				?>
-	        </div>
+	        <h3 id="entities"></h3>
         </div>
+
+        <div class="row content">
+	        <div class="col-sm-4">	        	
+		        <p id="news-Display"></p>
+		    </div>
+	        <div class="col-sm-8">
+		        <div class="well">
+		           <?php
+						$string= $_GET['url'];
+						echo '<iframe id="news" src='.$string.' width="800" height="3000" style="-moz-transform: scale(1.0); -o-transform: scale(1.0); -webkit-transform: scale(1.0); transform: scale(1.0);"/>';
+					?>
+		        </div>
+	        </div>
+	    </div>
    
 </body>
 </html>

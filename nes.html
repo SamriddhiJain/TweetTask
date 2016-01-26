@@ -63,7 +63,6 @@
         <li><a href="#">News</a></li>
         <li><a href="#">Tweets</a></li>
         <li><a href="#">Analytics</a></li>
-        <li><a href="#">News Display</a></li>
       </ul>
     </div>
   </div>
@@ -73,12 +72,11 @@
   <div class="row content">
     <div class="col-sm-3 sidenav hidden-xs">
       <h2 id="query"></h2>
-      <ul class="nav nav-pills nav-stacked">
+      <ul class="nav nav-pills nav-stacked" id="Tab">
         <li class="active"><a data-toggle="pill" href="#section1">Query</a></li>
         <li><a data-toggle="pill" href="#section2">News</a></li>
         <li><a data-toggle="pill" href="#section3">Tweets</a></li>
         <li><a data-toggle="pill" href="#section4">Analytics</a></li>
-        <li><a data-toggle="pill" href="#section5">News Display</a></li>
       </ul><br>
     </div>
     <br>
@@ -125,13 +123,13 @@
                             value += news[i].publisher;
                             value += "<br> <a href=view.php?url="
                             value += news[i].unescapedUrl;
-                            value += "&val="+val;
+                            value += "&val="+encodeURI(val);
                             value += ">Link for news </a>";
                             value += "</div></div>";
                           }
                           document.getElementById("newsDemo").innerHTML=value;
 
-                          $('.nav-pills a:[href="#section2"]').tab('show');
+                          $('#Tab a[href="#section2"]').tab('show');
                           
 
                         }else{
@@ -170,8 +168,11 @@
                     });
                   }
 
+                  var test='<script type="text/javascript" src="//www.google.co.in/trends/embed.js?hl=en-US&content=1&export=5&q='+val+'&w=500&h=330&cid=TIMESERIES_GRAPH_0">\</script\>'
+                  //alert(test);
                 //graphs  
-                /*document.getElementById("news-time").innerHTML='<script type="text/javascript" src="//www.google.com/trends/embed.js?hl=en-US&q='+encodeURI(val)+'&date=now+7-d&geo=IN&tz=Etc/GMT-5:30&content=1&cid=TIMESERIES_GRAPH_0&export=5&w=500&h=330">&lt;/script&gt;';*/
+                document.getElementById("news-time").innerHTML=test;
+                //document.getElementById("nt").innerHTML=test;
 
               });
 
@@ -221,7 +222,7 @@
       <div id="section4" class="tab-pane fade">
         <h3>Analysis and Graphs</h3>
           <div class="row">
-            <div class="col-sm-4">
+            <div id="news-time" class="col-sm-9">
               <div class="well">
                 <p id="news-time"></p>
               </div>
@@ -238,9 +239,6 @@
             </div>
         </div>
         
-      </div>
-      <div id="section5" class="tab-pane fade">
-        <div id="news"></div>
       </div>
     </div>
     
