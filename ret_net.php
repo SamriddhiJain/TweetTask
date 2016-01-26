@@ -12,35 +12,24 @@
 
 	function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oauth_token_secret) {
 	  $connection = new TwitterOAuth($cons_key, $cons_secret, $oauth_token, $oauth_token_secret);
-	  /*$connection->setProxy([
-	    'CURLOPT_PROXY' => '10.8.0.1',
-	    'CURLOPT_PROXYUSERPWD' => '',
-	    'CURLOPT_PROXYPORT' => 8080,
-	]);*/
 	  return $connection;
 	}
 
 	$connection = getConnectionWithAccessToken($consumerkey, $consumersecret, $accesstoken, $accesstokensecret);
 
 	$tweets = $connection->get("https://api.twitter.com/1.1/search/tweets.json?q=".urlencode($string)."&count=".$notweets);
-	//echo $tweets;
-	//echo $json;
-	//var_dump($tweets->search_metadata);
 	$json=$tweets->statuses;	
+	$id="";
 	
-	echo json_encode($json);
-/*json
-	foreach ($json as $var){
-		$o_user=$var->user;
-		$r_user = (isset($var->retweeted_status) ? $var->retweeted_status : false);
+	$stack = array();
 
-		if($r_user){
-			$ret_user=$var->retweeted_status->user;
-		}else{
-			$ret_user=$o_user;
-		}
-		
-		echo $o_user->name,",",$ret_user->name,",",$o_user->time_zone,",",$var->created_at;		
-		echo PHP_EOL;
-	}*/
+	foreach ($json as $key) {
+		$id=$key->id_str;
+		$tweets = $connection->get("https://api.twitter.com/1.1/statuses/oembed.json?id=".$id."&omit_script=true");
+		$results = $tweets->html;
+		array_push($stack, $results);
+	}
+
+	echo json_encode($stack);
+
 ?>

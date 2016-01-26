@@ -24,7 +24,7 @@
 	$fval="";
 	foreach ($array as &$val) {
 		preg_match_all($re3, $val, $matches3);
-		$fval.=$matches3[1][0]." OR ";
+		$fval.=$matches3[1][0]." ";
 	}
 
 	echo $fval;
