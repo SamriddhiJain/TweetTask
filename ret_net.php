@@ -8,7 +8,7 @@
 	$consumersecret = "6yKHtC4onmBx5vBenEj4uQwCXwL9omwKeX2dRqBy9PC6WeDXG5"; 
 	$accesstoken = "4733276482-5JSpMp8KqjhhiELjez8FpIdy2ZzClnUVaL7ru54"; 
 	$accesstokensecret = "BcUvJ6U4frtu5ITbgOzYmNY4dU0RDiSinRNXUK7DV8nlX";
-	$notweets = 10;
+	$notweets = 20;
 
 	function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oauth_token_secret) {
 	  $connection = new TwitterOAuth($cons_key, $cons_secret, $oauth_token, $oauth_token_secret);

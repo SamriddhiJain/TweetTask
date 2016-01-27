@@ -73,6 +73,8 @@
 	                        	var str ='<div class="well">Detected Entities: '+data+'</div>';
 	                        	document.getElementById("entities").innerHTML=str;
 	                      	    req=data;
+	                      	    reqN = req.replace(/\s/g, " OR ");
+	                      	    //alert(reqN);
 
 	                      	    var query="<?php echo $_GET['val'] ?>";
 	                      	  
@@ -82,7 +84,7 @@
 			                      type: "POST",
 			                      url: "ret_net.php?",
 			                      dataType: 'text',
-			                      data: "val="+ query,
+			                      data: "val="+ query+" "+reqN,
 			                      //timeout: 10000,
 			                      success: function(data) {
 			                        //alert(data);

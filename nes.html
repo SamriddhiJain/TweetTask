@@ -16,11 +16,21 @@
 
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 5000px}
+
+    #search{
+      background-color: #34465d;
+    }
     
     /* Set gray background color and 100% height */
     .sidenav {
       background-color: #f1f1f1;
       height: 100%;
+    }
+
+    .center {
+       float: none;
+       margin-left: auto;
+       margin-right: auto;
     }
         
     /* On small screens, set height to 'auto' for the grid */
@@ -69,6 +79,11 @@
 </nav>
 
 <div class="container-fluid">
+  <!--<div class="col-sm-12">
+    <div id="search" class="well">
+      <p id="top"></p>
+    </div>
+  </div>-->
   <div class="row content">
     <div class="col-sm-3 sidenav hidden-xs">
       <h2 id="query"></h2>
@@ -84,8 +99,8 @@
     <div class="tab-content">
       <div id="section1" class="tab-pane fade in active">
         <div class="col-sm-9">
-          <div class="well">
-            <label>Text :</label>
+          <div id="search" class="well">
+            <label style="color:white">Query :</label>
             <input id="text" type="text">
             <button id="myBtn" type="button" class="btn btn-info">
               <span class="glyphicon glyphicon-search"></span> Search
@@ -119,7 +134,7 @@
                             value += '<div class="col-sm-9"> <div class="well">';
                             value += news[i].titleNoFormatting;
                             value += "<br>"
-                            value += news[i].publishedDate;
+                            value += news[i].publishedDate+"<br>";
                             value += news[i].publisher;
                             value += "<br> <a href=view.php?url="
                             value += news[i].unescapedUrl;
@@ -142,7 +157,10 @@
                       }});
 
                     //request for tweets
-                    $.ajax({
+                    
+                  }
+
+                  $.ajax({
                       type: "POST",
                       url: "ret_net.php?",
                       dataType: 'text',
@@ -166,24 +184,23 @@
                         alert("An error occured: " + xhr.status + " " + xhr.statusText);
                       }
                     });
-                  }
 
-                  var test='<script type="text/javascript" src="//www.google.co.in/trends/embed.js?hl=en-US&content=1&export=5&q='+val+'&w=500&h=330&cid=TIMESERIES_GRAPH_0">\</script\>'
+                  
+                  var test='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=TIMESERIES_GRAPH_0&export=5&w=640&h=330"></iframe>';
                   //alert(test);
                 //graphs  
                 document.getElementById("news-time").innerHTML=test;
-                //document.getElementById("nt").innerHTML=test;
-
+                document.getElementById("news-region").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_MAP_0_0&export=5&w=640&h=330"></iframe>';
+                document.getElementById("news-region2").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_MAP_0_1&export=5&w=640&h=330"></iframe>';
+                document.getElementById("news-region3").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_TABLE_0_0&export=5&w=640&h=330"></iframe>';
               });
 
            </script>
-
-
-
           </div>
         </div>
-        <div class="col-sm-9">
-          <div class="well">
+        <div class="col-sm-6">
+          <div class="well center">
+            <h3 class="center">Trending News Topics</h3>
             <p id="hotTrends">
               <script type="text/javascript">
                   var trends="";
@@ -212,32 +229,38 @@
         </div>
       </div>
       <div id="section2" class="tab-pane fade">
-        <h3>News</h3>
+        <h3></h3>
         <p id="newsDemo"></p>
       </div>
       <div id="section3" class="tab-pane fade">
-        <h3>Tweets</h3>
+        <h3></h3>
         <p id="TweetDemo"></p>
       </div>
       <div id="section4" class="tab-pane fade">
-        <h3>Analysis and Graphs</h3>
-          <div class="row">
-            <div id="news-time" class="col-sm-9">
-              <div class="well">
-                <p id="news-time"></p>
+        <h3></h3>
+          <div class="container-fluid">
+            <div class="col-sm-7 ">
+              <div class="well center">
+                <p class="center" id="news-time"></p>
               </div>
             </div>
-            <div class="col-sm-4">
-              <div class="well">
+            <div class="col-sm-7 ">
+              <div class="well center">
                 <p id="news-region"></p>
               </div>
             </div>
-            <div class="col-sm-4">
-              <div class="well">
+            <div class="col-sm-7 ">
+              <div class="well center">
                 <p id="news-region2"></p>
               </div>
             </div>
-        </div>
+            <div class="col-sm-7 ">
+              <div class="well center">
+                <p id="news-region3"></p>
+              </div>
+            </div>
+          </div>
+      </div>
         
       </div>
     </div>
