@@ -1,0 +1,127 @@
+  <html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      var val="Rohit Vemula";
+      $.ajax({
+        type: "POST",
+        url: "graph.php?",
+        dataType: 'text',
+        data: "val="+val,
+        //timeout: 10000,
+        success: function(data) {
+            alert(data);
+        },
+        error: function(xhr){
+          alert("An error occured: " + xhr.status + " " + xhr.statusText);
+      }});
+      
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Time', 'Tweets (Day:Date:Hour)'],
+['Sat Jan 23 03',315
+],['Sat Jan 23 04',284
+],['Sat Jan 23 05',315
+],['Sat Jan 23 06',284
+],['Sat Jan 23 07',302
+],['Sat Jan 23 08',317
+],['Sat Jan 23 09',351
+],['Sat Jan 23 10',263
+],['Sat Jan 23 11',267
+],['Sat Jan 23 12',282
+],['Sat Jan 23 13',359
+],['Sat Jan 23 14',534
+],['Sat Jan 23 15',479
+],['Sat Jan 23 16',364
+],['Sat Jan 23 17',279
+],['Sat Jan 23 18',245
+],['Sat Jan 23 19',102
+],['Sat Jan 23 20',100
+],['Sat Jan 23 21',66
+],['Sat Jan 23 22',50
+],['Sat Jan 23 23',47
+],['Sun Jan 24 00',33
+],['Sun Jan 24 01',73
+],['Sun Jan 24 02',99
+],['Sun Jan 24 03',198
+],['Sun Jan 24 04',226
+],['Sun Jan 24 05',211
+],['Sun Jan 24 06',258
+],['Sun Jan 24 07',399
+],['Sun Jan 24 08',311
+],['Sun Jan 24 09',215
+],['Sun Jan 24 10',144
+],['Sun Jan 24 11',318
+],['Sun Jan 24 12',292
+],['Sun Jan 24 13',280
+],['Sun Jan 24 14',160
+],['Sun Jan 24 15',187
+],['Sun Jan 24 16',239
+],['Sun Jan 24 17',310
+],['Sun Jan 24 18',496
+],['Sun Jan 24 19',185
+],['Sun Jan 24 20',105
+],['Sun Jan 24 21',44
+],['Sun Jan 24 22',28
+],['Sun Jan 24 23',20
+],['Mon Jan 25 00',48
+],['Mon Jan 25 01',58
+],['Mon Jan 25 02',125
+],['Mon Jan 25 03',152
+],['Mon Jan 25 04',189
+],['Mon Jan 25 05',264
+],['Mon Jan 25 06',248
+],['Mon Jan 25 07',164
+],['Mon Jan 25 08',165
+],['Mon Jan 25 09',90
+],['Mon Jan 25 10',120
+],['Mon Jan 25 11',94
+],['Mon Jan 25 12',51
+],['Mon Jan 25 13',52
+],['Mon Jan 25 14',81
+],['Mon Jan 25 15',108
+],['Mon Jan 25 16',96
+],['Mon Jan 25 17',325
+],['Mon Jan 25 18',41
+],['Mon Jan 25 19',54
+],['Mon Jan 25 20',12
+],['Mon Jan 25 21',12
+],['Mon Jan 25 22',10
+],['Mon Jan 25 23',15
+],['Tue Jan 26 00',5
+],['Tue Jan 26 01',11
+],['Tue Jan 26 02',35
+],['Tue Jan 26 03',52
+],['Tue Jan 26 04',63
+],['Tue Jan 26 05',58
+],['Tue Jan 26 06',50
+],['Tue Jan 26 07',73
+],['Tue Jan 26 08',100
+],['Tue Jan 26 09',32
+],['Tue Jan 26 10',33
+],['Tue Jan 26 11',47
+],['Tue Jan 26 12',62
+],['Tue Jan 26 13',10
+], ]);
+
+        var options = {
+          title: 'Tweet Timeline- Rohith Vemula Sucide',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          backgroundColor: '',
+          colors:['red','#004411']
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="curve_chart" style="width: 1250px; height: 700px"></div>
+  </body>
+</html>
