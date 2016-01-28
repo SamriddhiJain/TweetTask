@@ -3,7 +3,9 @@
 <head>
   <title>News Integrator</title>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://platform.twitter.com/widgets.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -12,6 +14,10 @@
 
     html, body, .container-fluid, .row {
         height: 100%;
+    }
+
+    #loadingDiv{
+      height: 100%;
     }
 
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -54,9 +60,19 @@
    
     return t;
   }(document, "script", "twitter-wjs"));</script>
+
+  <script>
+    /*var $loading = $('#loadingDiv').hide();
+      $(document)
+        .ajaxStart(function () {
+          $loading.show();
+        })
+        .ajaxStop(function () {
+          $loading.hide();
+  });*/
+  </script>
 </head>
 <body>
-
 <nav class="navbar navbar-inverse visible-xs">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -115,8 +131,13 @@
                   //alert(val);
                   var value="";
                   var Tvalue="";
+                  document.getElementById("spin").style.display = 'block'; 
+
+                  document.getElementById("newsDemo").innerHTML="";
+                  document.getElementById("TweetDemo").innerHTML="";
 
                   for(var i=0;i<16;i+=8){
+                    //$('#loadingDiv').show();
                     $.ajax({
                       type: "POST",
                       url: "gnews.php?",
@@ -131,7 +152,7 @@
                           var news=result['responseData']['results'];
                          
                           for (var i in news){
-                            value += '<div class="col-sm-9"> <div class="well">';
+                            value += '<div class="col-sm-4"> <div class="well">';
                             value += news[i].titleNoFormatting;
                             value += "<br>"
                             value += news[i].publishedDate+"<br>";
@@ -139,7 +160,7 @@
                             value += "<br> <a href=view.php?url="
                             value += news[i].unescapedUrl;
                             value += "&val="+encodeURI(val);
-                            value += ">Link for news </a>";
+                            value += ' target="_blank">Link for news </a>';
                             value += "</div></div>";
                           }
                           document.getElementById("newsDemo").innerHTML=value;
@@ -178,21 +199,24 @@
                         }
                         document.getElementById("TweetDemo").innerHTML=Tvalue;
                         twttr.widgets.load();
+                        document.getElementById("spin").style.display = 'none';
                         //alert("Done");
                       },
                       error: function(xhr){
                         alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                        document.getElementById("spin").style.display = 'none';
                       }
                     });
+                  //$('#loadingDiv').hide();
 
                   
-                  var test='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=TIMESERIES_GRAPH_0&export=5&w=640&h=330"></iframe>';
+                var test='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=TIMESERIES_GRAPH_0&export=5&w=640&h=400"></iframe>';
                   //alert(test);
                 //graphs  
                 document.getElementById("news-time").innerHTML=test;
                 document.getElementById("news-region").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_MAP_0_0&export=5&w=640&h=330"></iframe>';
-                document.getElementById("news-region2").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_MAP_0_1&export=5&w=640&h=330"></iframe>';
-                document.getElementById("news-region3").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_TABLE_0_0&export=5&w=640&h=330"></iframe>';
+                document.getElementById("news-region2").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="330" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_MAP_0_1&export=5&w=640&h=400"></iframe>';
+                document.getElementById("news-region3").innerHTML='<iframe scrolling="no" style="border:none;" width="640" height="400" src="http://www.google.com/trends/fetchComponent?hl=en-US&q='+val+'&cmpt=q&content=1&cid=GEO_TABLE_0_0&export=5&w=640&h=400"></iframe>';
               });
 
            </script>
@@ -234,7 +258,34 @@
       </div>
       <div id="section3" class="tab-pane fade">
         <h3></h3>
-        <p id="TweetDemo"></p>
+        <p id="TweetDemo">
+          <div id="loadingDiv" class="container">
+              <div id="spin" class="clear-loading loading-effect-1">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+          </div>
+          <!--<script>
+            function onReady(callback) {
+                var intervalID = window.setInterval(checkReady, 1000);
+                function checkReady() {
+                    if (document.getElementsByTagName('body')[0] !== undefined) {
+                        window.clearInterval(intervalID);
+                        callback.call(this);
+                    }
+                }
+            }
+
+            function show(id, value) {
+                document.getElementById(id).style.display = value ? 'block' : 'none';
+            }
+
+            onReady(function () {
+                show('loadingDiv', true);
+            });
+          </script> -->
+        </p>
       </div>
       <div id="section4" class="tab-pane fade">
         <h3></h3>

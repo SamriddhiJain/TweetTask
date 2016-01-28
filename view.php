@@ -3,7 +3,9 @@
 <head>
   <title>News Integrator</title>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://platform.twitter.com/widgets.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -60,6 +62,7 @@
 		        	document.getElementById("myBtn").addEventListener("click", function(event){
               			event.preventDefault();
 			        	var text=document.getElementById('text').value;
+			        	document.getElementById("spin").style.display = 'block';
 
 			        	var req="";
 			        	//call nlp api
@@ -97,9 +100,11 @@
 			                        }
 			                        document.getElementById("news-Display").innerHTML=Tvalue;
 			                        twttr.widgets.load();
+			                        document.getElementById("spin").style.display = 'none';
 			                      },
 			                      error: function(xhr){
 			                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
+			                        document.getElementById("spin").style.display = 'none';
 			                      }
 			                    });
 
@@ -121,6 +126,13 @@
         <div class="row content">
 	        <div class="col-sm-4">	        	
 		        <p id="news-Display"></p>
+		        <div id="loadingDiv" class="container">
+		            <div id="spin" class="clear-loading loading-effect-1">
+		                <span></span>
+		                <span></span>
+		                <span></span>
+		            </div>
+	          </div>
 		    </div>
 	        <div class="col-sm-8">
 		        <div class="well">
