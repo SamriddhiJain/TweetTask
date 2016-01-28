@@ -41,10 +41,10 @@
 	        <div id="search" class="well">
 	        	<span>
 		        	<input id="text" type="text">
-		        	<h3 style="color:white">Copy paste the text and click on the button to get the related tweets</h3>
-		            <button id="myBtn" type="button" class="btn btn-info">
+		        	<button id="myBtn" type="button" class="btn btn-info">
 			            <span class="glyphicon glyphicon-search"></span> Search
 			        </button>
+		        	<h3 style="color:white">Copy paste the text and click on the button to get the related tweets</h3>
 		        </span>
 
 		        <script>
@@ -62,6 +62,7 @@
 		        	document.getElementById("myBtn").addEventListener("click", function(event){
               			event.preventDefault();
 			        	var text=document.getElementById('text').value;
+			        	document.getElementById("news-Display").innerHTML="";
 			        	document.getElementById("spin").style.display = 'block';
 
 			        	var req="";

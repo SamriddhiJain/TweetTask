@@ -225,30 +225,40 @@
         <div class="col-sm-6">
           <div class="well center">
             <h3 class="center">Trending News Topics</h3>
-            <p id="hotTrends">
-              <script type="text/javascript">
-                  var trends="";
-                  $.ajax({
-                      type: "POST",
-                      url: "pg.php?",
-                      dataType: 'text',
-                      success: function(data) { 
-                        var result=JSON.parse(data);
-                        //alert(result); 
-                        for (var i in result){
-                          if(result[i]!="Hot Trends"){
-                            trends+=result[i]
-                            trends+='<br>'
+            <div class="list-group">
+              <p id="hotTrends"></p>
+                <script type="text/javascript">
+                    var trends="";
+                    $.ajax({
+                        type: "POST",
+                        url: "pg.php?",
+                        dataType: 'text',
+                        success: function(data) { 
+                          var result=JSON.parse(data);
+                          //alert(result); 
+                          for (var i in result){
+                            if(result[i]!="Hot Trends"){
+                              trends+='<a href="#" class="list-group-item" onclick="startReq(this.innerHTML)">'
+                              trends+=result[i]
+                              trends+='</a>'
+                            }
                           }
+                          document.getElementById("hotTrends").innerHTML=trends;
+                        },
+                        error: function(xhr){
+                          alert("An error occured: " + xhr.status + " " + xhr.statusText);
                         }
-                        document.getElementById("hotTrends").innerHTML=trends;
-                      },
-                      error: function(xhr){
-                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
-                      }
-                    });
-              </script>
-            </p>
+                      });
+                </script>
+                <script>
+                  function startReq(str)
+                  {
+                      //alert(str);
+                      document.getElementById("text").value=str;
+                      document.getElementById("myBtn").click();
+                  }
+                </script>
+            </div>
           </div>
         </div>
       </div>
@@ -266,25 +276,6 @@
                 <span></span>
               </div>
           </div>
-          <!--<script>
-            function onReady(callback) {
-                var intervalID = window.setInterval(checkReady, 1000);
-                function checkReady() {
-                    if (document.getElementsByTagName('body')[0] !== undefined) {
-                        window.clearInterval(intervalID);
-                        callback.call(this);
-                    }
-                }
-            }
-
-            function show(id, value) {
-                document.getElementById(id).style.display = value ? 'block' : 'none';
-            }
-
-            onReady(function () {
-                show('loadingDiv', true);
-            });
-          </script> -->
         </p>
       </div>
       <div id="section4" class="tab-pane fade">
